@@ -1,8 +1,8 @@
-import { Box, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, Container, Grid, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import BirthDayItems from "../BirthDayItems/BirthDayItems";
 
@@ -14,7 +14,8 @@ const Calendar: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState("")
     const [searchInput, setSearchInput] = useState("")
     const [filteredResults, setFilteredResults] = useState([]);
-    const [favouriteList, setFavouriteList] = useState([])
+    // const map = new Map();
+    const [favouriteList, setFavouriteList] = useState(new Map())
 
 
 
@@ -36,7 +37,9 @@ const Calendar: React.FC = () => {
         let month = date?.month() + 1 ?? 1;
 
         setLoading(true);
+
         setSelectedDate(`${getMonthName(month)} ${day}`)
+
         fetch(`https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/${month}/${day}`)
             .then(response => response.json())
             .then(births => { setBirthdays(births) })
@@ -50,7 +53,7 @@ const Calendar: React.FC = () => {
     }
 
     const addToFavourite = (birthName: string) => {
-        setFavouriteList([...favouriteList, { date: selectedDate, name: birthName }])
+        setFavouriteList(new Map(favouriteList.set(selectedDate, [favouriteList.get(selectedDate), birthName])))
     }
 
 
@@ -68,7 +71,19 @@ const Calendar: React.FC = () => {
                         </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        {console.log({ favouriteList })}
+                        <Typography variant="h5">
+                            Favoutire Birthdays
+                        </Typography>
+                        {[...favouriteList?.keys()].map(date => (
+                            <List dense={false}>
+                                <ListItem>
+                                    <ListItemText
+                                        primary={date}
+                                        secondary={favouriteList.get(date)}
+                                    />
+                                </ListItem>,
+                            </List>
+                        ))}
                     </Grid>
                     <Grid container spacing={1}>
 
