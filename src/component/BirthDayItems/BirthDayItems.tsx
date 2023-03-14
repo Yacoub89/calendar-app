@@ -6,16 +6,17 @@ import { MouseEventHandler, useState } from "react";
 interface Props {
     birthday: {};
     index: number;
-    onHandleButtonClick: (birthName: string) => MouseEventHandler;
+    onHandleButtonClick: (birthName: string, isFavourite: boolean) => MouseEventHandler;
 }
 
 const BirthDayItems: React.FC<Props> = ({ birthday, index, onHandleButtonClick }) => {
     const [isFavourite, setIsFavourite] = useState(false)
 
 
-    const onHanldeFacourite = (birthName) => {
+    const onHanldeFavourite = (birthName) => {
         setIsFavourite(!isFavourite);
-        onHandleButtonClick(birthName)
+        onHandleButtonClick(birthName, isFavourite)
+
     }
 
     return (
@@ -23,7 +24,7 @@ const BirthDayItems: React.FC<Props> = ({ birthday, index, onHandleButtonClick }
         <List dense={false} key={index}>
             <ListItem>
                 {/* <ListItemButton > */}
-                <ListItemIcon style={{ cursor: "pointer" }} onClick={() => onHanldeFacourite(birthday.text)}>
+                <ListItemIcon style={{ cursor: "pointer" }} onClick={() => onHanldeFavourite(birthday.text)}>
                     {isFavourite ? <StarIcon /> : <StarOutlineIcon />}
                 </ListItemIcon>
                 <ListItemText

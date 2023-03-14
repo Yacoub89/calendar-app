@@ -1,3 +1,4 @@
+import { Diversity1 } from "@mui/icons-material";
 import { Box, CircularProgress, Container, Grid, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -52,8 +53,21 @@ const Calendar: React.FC = () => {
         setSearchInput(e.target.value)
     }
 
-    const addToFavourite = (birthName: string) => {
-        setFavouriteList(new Map(favouriteList.set(selectedDate, [favouriteList.get(selectedDate), birthName])))
+    const addToFavourite = (birthName: string, isFavourite: boolean) => {
+        console.log({ isFavourite })
+        if (!isFavourite) {
+            setFavouriteList(new Map(favouriteList.set(selectedDate, [favouriteList.get(selectedDate), birthName])))
+        }
+        else {
+            const filteredNames = favouriteList.get(selectedDate)?.filter(name => { name !== birthName })
+            console.log({ filteredNames })
+            const newMap = new Map(favouriteList)
+            newMap.set(selectedDate, filteredNames);
+            setFavouriteList(newMap)
+                ;
+
+        }
+
     }
 
 
@@ -74,14 +88,19 @@ const Calendar: React.FC = () => {
                         <Typography variant="h5">
                             Favoutire Birthdays
                         </Typography>
-                        {[...favouriteList?.keys()].map(date => (
-                            <List dense={false}>
+                        {[...favouriteList?.keys()].map((date, index) => (
+                            <List key={index} dense={false}>
                                 <ListItem>
                                     <ListItemText
                                         primary={date}
-                                        secondary={favouriteList.get(date)}
+                                        secondary={[...favouriteList.get(date)].map(name => (
+                                            <Typography variant="subtitle1" >
+                                                {name}
+                                            </Typography>
+
+                                        ))}
                                     />
-                                </ListItem>,
+                                </ListItem>
                             </List>
                         ))}
                     </Grid>
@@ -119,7 +138,7 @@ const Calendar: React.FC = () => {
                 </Grid>
             </Box>
 
-        </Container>
+        </Container >
     )
 }
 
