@@ -2,7 +2,7 @@ import { Box, CircularProgress, Container, Grid, TextField, Typography } from "@
 import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 
 import BirthDayItems from "../BirthDayItems/BirthDayItems";
 
@@ -11,10 +11,10 @@ import BirthDayItems from "../BirthDayItems/BirthDayItems";
 const Calendar: React.FC = () => {
     const [birthdays, setBirthdays] = useState<any>([]);
     const [loading, setLoading] = useState(false)
-    const [selectedDay, setSelectedDay] = useState<number>()
-    const [selectedMonth, setSelectedMonth] = useState("")
+    const [selectedDate, setSelectedDate] = useState("")
     const [searchInput, setSearchInput] = useState("")
     const [filteredResults, setFilteredResults] = useState([]);
+    const [favouriteList, setFavouriteList] = useState([])
 
 
 
@@ -36,8 +36,7 @@ const Calendar: React.FC = () => {
         let month = date?.month() + 1 ?? 1;
 
         setLoading(true);
-        setSelectedDay(day);
-        setSelectedMonth(getMonthName(month))
+        setSelectedDate(`${getMonthName(month)} ${day}`)
         fetch(`https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/${month}/${day}`)
             .then(response => response.json())
             .then(births => { setBirthdays(births) })
@@ -49,7 +48,14 @@ const Calendar: React.FC = () => {
     const searchBirthdays = (e: any) => {
         setSearchInput(e.target.value)
     }
+
+    const addToFavourite = (birthName: string) => {
+        setFavouriteList([...favouriteList, { date: selectedDate, name: birthName }])
+    }
+
+
     return (
+
         <Container fixed>
             <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
                 <Grid container spacing={2}>
@@ -60,6 +66,9 @@ const Calendar: React.FC = () => {
                                 defaultValue={dayjs()}
                             />
                         </LocalizationProvider>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        {console.log({ favouriteList })}
                     </Grid>
                     <Grid container spacing={1}>
 
@@ -72,7 +81,7 @@ const Calendar: React.FC = () => {
                             <>
                                 <Box>
                                     <Typography variant="h5">
-                                        {`Birthdays on ${selectedMonth} ${selectedDay}`}
+                                        {`Birthdays on ${selectedDate}`}
                                     </Typography>
 
                                     <TextField value={searchInput} onChange={searchBirthdays} label="Search" variant="standard" />
@@ -82,7 +91,7 @@ const Calendar: React.FC = () => {
                                     {
                                         filteredResults.map((birthday: any, index: number) => {
                                             return (
-                                                <BirthDayItems birthday={birthday} index={index} />
+                                                <BirthDayItems birthday={birthday} index={index} onHandleButtonClick={addToFavourite} />
                                             )
                                         })
                                     }
@@ -93,7 +102,6 @@ const Calendar: React.FC = () => {
                         }
                     </Grid>
                 </Grid>
-
             </Box>
 
         </Container>
