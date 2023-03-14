@@ -1,9 +1,10 @@
-import { Box, CircularProgress, Container, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
 import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
+
+import BirthDayItems from "../BirthDayItems/BirthDayItems";
 
 
 
@@ -77,23 +78,16 @@ const Calendar: React.FC = () => {
                                     <TextField value={searchInput} onChange={searchBirthdays} label="Search" variant="standard" />
                                 </Box>
                                 <Box>
-                                    {filteredResults.map((birthday: any, index: number) => {
-                                        return (
-                                            <List dense={false} key={index}>
-                                                <ListItem>
-                                                    <ListItemButton>
-                                                        <ListItemIcon>
-                                                            <StarOutlineIcon />
-                                                        </ListItemIcon>
-                                                        <ListItemText
-                                                            primary={birthday.text}
-                                                        />
-                                                    </ListItemButton>
-                                                </ListItem>
 
-                                            </List>
-                                        )
-                                    })}
+                                    {
+                                        filteredResults.map((birthday: any, index: number) => {
+                                            return (
+                                                <BirthDayItems birthday={birthday} index={index} />
+                                            )
+                                        })
+                                    }
+
+
                                 </Box>
                             </>
                         }
