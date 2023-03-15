@@ -1,7 +1,6 @@
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
-import { useState } from "react";
 
 interface Props {
     personality: string;
@@ -19,7 +18,7 @@ const BirthDayListItems: React.FC<Props> = ({ personality, onHandleButtonClick, 
     return (
         <ListItem>
             <ListItemIcon style={{ cursor: "pointer" }} onClick={() => onHanldeFavourite(personality)}>
-                {isFavourite ? <StarIcon /> : <StarOutlineIcon />}
+                {isFavourite ? <StarIcon color="primary" /> : <StarOutlineIcon />}
             </ListItemIcon>
             <ListItemText
                 primary={personality}

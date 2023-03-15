@@ -24,4 +24,4 @@ const FavouriteListItems: React.FC<Props> = ({ date, favouriteList }) => {
     )
 }
 
-export default FavouriteListItems;
+export default FavouriteListItems; 

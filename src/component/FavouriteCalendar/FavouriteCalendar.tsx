@@ -1,4 +1,3 @@
-
 import { Box, CircularProgress, Container, Grid, List, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import BirthDayListItems from "../BirthDayListItems/BirthDayListItems";
@@ -6,10 +5,12 @@ import Calendar from "../Calendar/Calendar";
 import FavouriteListItems from "../FavouriteListItems/FavouriteListItems";
 
 
-interface Result {
-    pages: { type: string, title: string, displayTittle: string }[],
+interface Birth {
     text: string,
     year: number,
+}
+interface Result {
+    births: Birth[];
 }
 
 interface FavouriteListType {
@@ -19,17 +20,17 @@ interface FavouriteListType {
 
 
 const FavouriteCalendar: React.FC = () => {
-    const [birthdays, setBirthdays] = useState<any>([]);
+    const [birthdays, setBirthdays] = useState<Result>();
     const [loading, setLoading] = useState(false)
-    const [selectedDate, setSelectedDate] = useState("")
-    const [searchInput, setSearchInput] = useState("")
-    const [filteredResults, setFilteredResults] = useState<Result[]>([]);
+    const [selectedDate, setSelectedDate] = useState("");
+    const [searchInput, setSearchInput] = useState("");
+    const [filteredResults, setFilteredResults] = useState<Birth[]>();
     const [favouriteList, setFavouriteList] = useState(new Map<string, FavouriteListType[]>());
 
 
 
     useEffect(() => {
-        const filteredBithrdays = birthdays?.births?.filter((birth: Result) => birth.text.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase()))
+        const filteredBithrdays = birthdays?.births?.filter((birth: Birth) => birth.text.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase()))
         setFilteredResults(filteredBithrdays)
     }, [searchInput, birthdays]);
 
@@ -88,7 +89,6 @@ const FavouriteCalendar: React.FC = () => {
             }
             const newValue = new Map(favouriteList).get(selectedDate)?.map((entry) => entry.name === birthName ? newEntry : entry);
             const newList = new Map(favouriteList).set(selectedDate, newValue ?? []);
-            // console.log(newList);
             setFavouriteList(newList)
         }
     }
@@ -110,7 +110,7 @@ const FavouriteCalendar: React.FC = () => {
                     </Typography>
                 }
                 {[...favouriteList?.keys()].map((date, index) => (
-                    <List dense={false}>
+                    <List key={index} dense={false}>
                         <FavouriteListItems date={date} favouriteList={favouriteList} />
                     </List>
                 ))}
@@ -122,9 +122,7 @@ const FavouriteCalendar: React.FC = () => {
         return (
             <>
                 {loading &&
-                    <Box sx={{ display: 'flex' }}>
-                        <CircularProgress />
-                    </Box>}
+                    <Container><CircularProgress /></Container>}
 
                 {!loading && filteredResults &&
                     <Container>
@@ -137,9 +135,9 @@ const FavouriteCalendar: React.FC = () => {
                         </Box>
                         <Box>
                             {
-                                filteredResults.map((birthday: any, index: number) => {
+                                filteredResults?.map((birthday: Birth, index: number) => {
                                     return (
-                                        <List dense={false} >
+                                        <List dense={false} key={index}>
                                             <BirthDayListItems personality={birthday.text} isFavourite={getIsFavourite(birthday.text)} onHandleButtonClick={onToggleFavourite} />
                                         </List>
                                     )
