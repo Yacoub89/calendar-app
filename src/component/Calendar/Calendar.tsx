@@ -72,11 +72,10 @@ const Calendar: React.FC = () => {
 
     }
 
-
     return (
 
         <Container fixed>
-            <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+            <Box sx={{ flexGrow: 1, maxWidth: 800 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={5}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
