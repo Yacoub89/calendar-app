@@ -4,38 +4,30 @@ import StarIcon from '@mui/icons-material/Star';
 import { MouseEventHandler, useState } from "react";
 
 interface Props {
-    birthday: {};
+    birthday: { text: "" };
     index: number;
-    onHandleButtonClick: (birthName: string, isFavourite: boolean) => MouseEventHandler;
+    onHandleButtonClick: (birthName: string, isFavourite: boolean) => void;
 }
 
 const BirthDayItems: React.FC<Props> = ({ birthday, index, onHandleButtonClick }) => {
     const [isFavourite, setIsFavourite] = useState(false)
 
-
-    const onHanldeFavourite = (birthName) => {
+    const onHanldeFavourite = (birthName: string) => {
         setIsFavourite(!isFavourite);
-        onHandleButtonClick(birthName, isFavourite)
-
+        onHandleButtonClick(birthName, !isFavourite)
     }
 
     return (
 
-        <List dense={false} key={index}>
-            <ListItem>
-                {/* <ListItemButton > */}
-                <ListItemIcon style={{ cursor: "pointer" }} onClick={() => onHanldeFavourite(birthday.text)}>
-                    {isFavourite ? <StarIcon /> : <StarOutlineIcon />}
-                </ListItemIcon>
-                <ListItemText
-                    primary={birthday.text}
-                />
-                {/* </ListItemButton> */}
-            </ListItem>
-        </List>
 
-
-
+        <ListItem>
+            <ListItemIcon style={{ cursor: "pointer" }} onClick={() => onHanldeFavourite(birthday.text)}>
+                {isFavourite ? <StarIcon /> : <StarOutlineIcon />}
+            </ListItemIcon>
+            <ListItemText
+                primary={birthday.text}
+            />
+        </ListItem>
     )
 }
 

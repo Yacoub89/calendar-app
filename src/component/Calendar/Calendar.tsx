@@ -3,7 +3,7 @@ import { Box, CircularProgress, Container, Grid, List, ListItem, ListItemText, T
 import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 
 import BirthDayItems from "../BirthDayItems/BirthDayItems";
 
@@ -55,16 +55,18 @@ const Calendar: React.FC = () => {
 
     const addToFavourite = (birthName: string, isFavourite: boolean) => {
         console.log({ isFavourite })
-        if (!isFavourite) {
+        if (isFavourite) {
             setFavouriteList(new Map(favouriteList.set(selectedDate, [favouriteList.get(selectedDate), birthName])))
         }
         else {
-            const filteredNames = favouriteList.get(selectedDate)?.filter(name => { name !== birthName })
-            console.log({ filteredNames })
-            const newMap = new Map(favouriteList)
-            newMap.set(selectedDate, filteredNames);
-            setFavouriteList(newMap)
-                ;
+
+            console.log({ isFavourite, else: "else" })
+            const listOfFilteredName = favouriteList.get(selectedDate).filter((name: string) => name !== birthName);
+            console.log({ listOfFilteredName })
+
+            const newFavouriteList = new Map(favouriteList)
+            newFavouriteList.set(selectedDate, listOfFilteredName);
+            setFavouriteList(newFavouriteList)
 
         }
 
@@ -76,7 +78,7 @@ const Calendar: React.FC = () => {
         <Container fixed>
             <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={5}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <StaticDatePicker
                                 onChange={(date) => handleDateChange(date)}
@@ -84,16 +86,17 @@ const Calendar: React.FC = () => {
                             />
                         </LocalizationProvider>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={7}>
                         <Typography variant="h5">
-                            Favoutire Birthdays
+                            Favourite Birthdays
                         </Typography>
                         {[...favouriteList?.keys()].map((date, index) => (
-                            <List key={index} dense={false}>
+                            <List dense={false}>
                                 <ListItem>
                                     <ListItemText
+                                        key={index}
                                         primary={date}
-                                        secondary={[...favouriteList.get(date)].map(name => (
+                                        secondary={[...favouriteList?.get(date)].map(name => (
                                             <Typography variant="subtitle1" >
                                                 {name}
                                             </Typography>
@@ -125,7 +128,9 @@ const Calendar: React.FC = () => {
                                     {
                                         filteredResults.map((birthday: any, index: number) => {
                                             return (
-                                                <BirthDayItems birthday={birthday} index={index} onHandleButtonClick={addToFavourite} />
+                                                <List dense={false} key={index}>
+                                                    <BirthDayItems birthday={birthday} index={index} onHandleButtonClick={addToFavourite} />
+                                                </List>
                                             )
                                         })
                                     }
