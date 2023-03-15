@@ -107,37 +107,40 @@ const Calendar: React.FC = () => {
                         ))}
                     </Grid>
                     <Grid container spacing={1}>
+                        <Grid item xs={12} md={6}>
 
-                        {loading &&
-                            <Box sx={{ display: 'flex' }}>
-                                <CircularProgress />
-                            </Box>}
+                            {loading &&
+                                <Box sx={{ display: 'flex' }}>
+                                    <CircularProgress />
+                                </Box>}
 
-                        {!loading && filteredResults &&
-                            <>
-                                <Box>
-                                    <Typography variant="h5">
-                                        {`Birthdays on ${selectedDate}`}
-                                    </Typography>
+                            {!loading && filteredResults &&
+                                <>
+                                    <Box>
+                                        <Typography variant="h5">
+                                            {`Birthdays on ${selectedDate}`}
+                                        </Typography>
 
-                                    <TextField value={searchInput} onChange={searchBirthdays} label="Search" variant="standard" />
-                                </Box>
-                                <Box>
+                                        <TextField value={searchInput} onChange={searchBirthdays} label="Search" variant="standard" />
+                                    </Box>
+                                    <Box>
 
-                                    {
-                                        filteredResults.map((birthday: any, index: number) => {
-                                            return (
-                                                <List dense={false} key={index}>
-                                                    <BirthDayItems birthday={birthday} index={index} onHandleButtonClick={addToFavourite} />
-                                                </List>
-                                            )
-                                        })
-                                    }
+                                        {
+                                            filteredResults.map((birthday: any, index: number) => {
+                                                return (
+                                                    <List dense={false} key={index}>
+                                                        <BirthDayItems birthday={birthday} index={index} onHandleButtonClick={addToFavourite} />
+                                                    </List>
+                                                )
+                                            })
+                                        }
 
 
-                                </Box>
-                            </>
-                        }
+                                    </Box>
+                                </>
+                            }
+                        </Grid>
+
                     </Grid>
                 </Grid>
             </Box>
