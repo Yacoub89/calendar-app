@@ -1,11 +1,11 @@
 
 import './App.css';
-import Calendar from './component/Calendar/Calendar';
+import FavouriteCalendar from './component/FavouriteCalendar/FavouriteCalendar';
 
 function App() {
   return (
     <div className="App">
-      <Calendar />
+      <FavouriteCalendar />
     </div>
   );
 }
