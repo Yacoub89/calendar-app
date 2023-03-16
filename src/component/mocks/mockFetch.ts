@@ -3,16 +3,14 @@ const BirthNamesList = {
         { text: "yacoub" },
         { text: "Mark" }
     ]
-
 }
 
-export default async function mockFetch() {
-    return {
+const mockFetch = async () => (
+    Promise.resolve({
         ok: true,
         status: 200,
-        json: async () => Promise.resolve({ BirthNamesList }),
-    };
+        json: async () => BirthNamesList,
+    })
+)
 
-
-
-}
+export default mockFetch;

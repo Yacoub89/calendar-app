@@ -13,17 +13,7 @@ const renderScreen = (() => {
 let fetchMock: any = undefined;
 
 beforeEach(() =>
-    // fetchMock = jest.spyOn(window, "fetch")
-    //     .mockImplementation(jest.fn(() =>
-    //         Promise.resolve({
-    //             ok: true,
-    //             status: 200,
-    //             json: async () => { birhts: [{ text: "yacoub" }] },
-    //         }),
-    //     ) as jest.Mock);
-
-// fetchMock = jest.spyOn(window, 'fetch').mockImplementation(mockFetch)
-
+    fetchMock = jest.spyOn(window, 'fetch').mockImplementation(mockFetch)
 );
 
 afterEach(() => {
