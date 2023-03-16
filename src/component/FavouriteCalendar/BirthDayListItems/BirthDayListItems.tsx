@@ -17,7 +17,7 @@ const BirthDayListItems: React.FC<Props> = ({ personality, onHandleButtonClick, 
 
     return (
         <ListItem>
-            <ListItemIcon style={{ cursor: "pointer" }} onClick={() => onHanldeFavourite(personality)}>
+            <ListItemIcon data-testid="icon-button" style={{ cursor: "pointer" }} onClick={() => onHanldeFavourite(personality)}>
                 {isFavourite ? <StarIcon color="primary" /> : <StarOutlineIcon />}
             </ListItemIcon>
             <ListItemText

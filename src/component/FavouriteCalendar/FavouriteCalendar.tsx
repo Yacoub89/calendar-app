@@ -1,13 +1,12 @@
 import { Box, CircularProgress, Container, Grid, List, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import BirthDayListItems from "../BirthDayListItems/BirthDayListItems";
-import Calendar from "../Calendar/Calendar";
-import FavouriteListItems from "../FavouriteListItems/FavouriteListItems";
+import BirthDayListItems from "./BirthDayListItems/BirthDayListItems";
+import Calendar from "./Calendar/Calendar";
+import FavouriteListItems from "./FavouriteListItems/FavouriteListItems";
 
 
 interface Birth {
     text: string,
-    year: number,
 }
 interface Result {
     births: Birth[];
@@ -31,7 +30,7 @@ const FavouriteCalendar: React.FC = () => {
 
     useEffect(() => {
         const filteredBithrdays = birthdays?.births?.filter((birth: Birth) => birth.text.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase()))
-        setFilteredResults(filteredBithrdays)
+        setFilteredResults(filteredBithrdays);
     }, [searchInput, birthdays]);
 
 
@@ -122,9 +121,9 @@ const FavouriteCalendar: React.FC = () => {
         return (
             <>
                 {loading &&
-                    <Container><CircularProgress /></Container>}
+                    <Container><CircularProgress data-testid="progress" /></Container>}
 
-                {!loading && filteredResults &&
+                {!loading && birthdays &&
                     <Container>
                         <Box>
                             <Typography variant="h5">

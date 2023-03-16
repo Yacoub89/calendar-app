@@ -9,8 +9,9 @@ interface Props {
 const Calendar: React.FC<Props> = ({ handleDateChange }) => {
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider role="button" dateAdapter={AdapterDayjs}>
             <StaticDatePicker
+                data-testid="date-picker"
                 onChange={(date) => handleDateChange(date)}
                 value={dayjs()}
             />
